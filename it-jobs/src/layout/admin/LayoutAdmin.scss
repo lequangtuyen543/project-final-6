@@ -1,0 +1,49 @@
+.layout-admin {
+  font-size: 18px;
+
+  .header {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+
+    .logo {
+      width: 230px;
+      border-right: 1px solid #ddd;
+      padding: 10px 20px;
+
+      &--collapsed{
+        width: 80px;
+      }
+    }
+
+    .nav-wrap {
+      display: flex;
+      flex: 1;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+
+      .ant-btn{
+        margin: 0 !important;
+      }
+    }
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+  &__sider {
+    background-color: #ddd;
+
+    .ant-menu-title-content a {
+      text-decoration: none;
+    }
+  }
+
+  &__main {
+    padding: 20px;
+  }
+}
