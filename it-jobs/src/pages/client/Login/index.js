@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginCompany } from "../../../services/companyService";
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Card, Form, Input, message } from 'antd';
 import { setCookie } from "../../../helpers/cookie";
 import { checkAuthen } from "../../../actions/auth";
@@ -11,23 +11,40 @@ function Register() {
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [loadings, setLoadings] = useState(false);
 
   const onFinish = async (values) => {
-    const data = await loginCompany(values.email, values.password);
+    try {
+      setLoadings(true);
+      const data = await loginCompany(values.email, values.password);
 
-    console.log(data);
+      console.log(data);
 
-    if (data.length > 0) {
-      const time = 1;
-      setCookie("id", data[0].id, time);
-      setCookie("companyName", data[0].companyName, time);
-      setCookie("email", data[0].email, time);
-      setCookie("token", data[0].token, time);
-      dispatch(checkLogin(true));
-      navigate("/");
-    } else {
-      messageApi["error"]("tk hoac mk khong dung");
+      if (data.length > 0) {
+        const time = 1;
+
+        setCookie("id", data[0].id, time);
+        setCookie("companyName", data[0].companyName, time);
+        setCookie("email", data[0].email, time);
+        setCookie("token", data[0].token, time);
+
+        dispatch(checkLogin(true));
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      } else {
+        messageApi["error"]("tk hoac mk khong dung");
+      }
+    } catch (error) {
+      messageApi.open({
+        type: 'error',
+        content: 'Có lỗi xảy ra. Vui lòng thử lại!',
+      });
+      console.error(error);
+    } finally {
+      setLoadings(false);
     }
+
   }
 
   return (
